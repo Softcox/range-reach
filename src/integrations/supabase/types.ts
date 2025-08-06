@@ -14,16 +14,290 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      audit_logs: {
+        Row: {
+          action: string
+          created_at: string
+          created_by: string | null
+          id: string
+          new_values: Json | null
+          old_values: Json | null
+          record_id: string
+          table_name: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id: string
+          table_name: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          record_id?: string
+          table_name?: string
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          name: Database["public"]["Enums"]["category_type"]
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name: Database["public"]["Enums"]["category_type"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          name?: Database["public"]["Enums"]["category_type"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      identifiers: {
+        Row: {
+          category: Database["public"]["Enums"]["category_type"]
+          created_at: string
+          created_by: string | null
+          id: string
+          identifier_number: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["category_type"]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          identifier_number: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["category_type"]
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          identifier_number?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      items: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          identifier_id: string
+          name: string
+          unit_of_measurement: string
+          unit_price: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          identifier_id: string
+          name: string
+          unit_of_measurement: string
+          unit_price: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          identifier_id?: string
+          name?: string
+          unit_of_measurement?: string
+          unit_price?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "items_identifier_id_fkey"
+            columns: ["identifier_id"]
+            isOneToOne: false
+            referencedRelation: "identifiers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opening_balances: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          identifier_id: string
+          opening_cost: number
+          opening_quantity: number
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          identifier_id: string
+          opening_cost?: number
+          opening_quantity?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          identifier_id?: string
+          opening_cost?: number
+          opening_quantity?: number
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opening_balances_identifier_id_fkey"
+            columns: ["identifier_id"]
+            isOneToOne: true
+            referencedRelation: "identifiers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          updated_at: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          updated_at?: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          username?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          cancellations: number
+          created_at: string
+          created_by: string | null
+          date: string
+          id: string
+          identifier_id: string
+          pods: number
+          sales: number
+          status: Database["public"]["Enums"]["transaction_status"]
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          cancellations?: number
+          created_at?: string
+          created_by?: string | null
+          date: string
+          id?: string
+          identifier_id: string
+          pods?: number
+          sales?: number
+          status?: Database["public"]["Enums"]["transaction_status"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          cancellations?: number
+          created_at?: string
+          created_by?: string | null
+          date?: string
+          id?: string
+          identifier_id?: string
+          pods?: number
+          sales?: number
+          status?: Database["public"]["Enums"]["transaction_status"]
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_identifier_id_fkey"
+            columns: ["identifier_id"]
+            isOneToOne: false
+            referencedRelation: "identifiers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      category_type: "range1" | "range2"
+      transaction_status: "pending" | "arrived" | "canceled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +424,10 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      category_type: ["range1", "range2"],
+      transaction_status: ["pending", "arrived", "canceled"],
+    },
   },
 } as const
